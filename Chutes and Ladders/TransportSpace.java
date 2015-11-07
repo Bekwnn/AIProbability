@@ -8,4 +8,9 @@ public class TransportSpace
 		start = st;
 		end = nd;
 	}
+	
+	public boolean IsLadder()
+	{
+		return (start < end)? true : false;
+	}
 }

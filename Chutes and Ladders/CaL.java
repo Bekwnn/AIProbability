@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class CaL
 {
@@ -16,6 +17,43 @@ public class CaL
 		}
 		
 		ReadInputFile(args[0]);
+		
+		ArrayList<GameResults> resultsList = new ArrayList<GameResults>();
+		for (int i = 0; i < 1000; i++)
+		{
+			GameResults gameResults = PlayGame();
+			resultsList.add(gameResults);
+		}
+		
+		//TODO: analyze results and compute averages/histogram
+	}
+	
+	public static GameResults PlayGame()
+	{
+		Random randomGenerator = new Random();
+		int moves = 0;
+		int transportsCaught = 0;
+		int transportBalance = 0;
+		for (int playerPos = 1; playerPos < NUM_OF_SQUARES;)
+		{
+			moves++;
+			playerPos += randomGenerator.nextInt(6) + 1;
+			for (TransportSpace space : portSpaces)
+			{
+				if (playerPos == space.start)
+				{
+					System.out.println("Caught a transport from " + playerPos + " to " + space.end);
+					
+					transportsCaught++;
+					transportBalance += space.end - space.start;
+					
+					playerPos = space.end;
+				}
+			}
+		}
+		System.out.println("Game Completed in " + moves + " moves.");
+		
+		return new GameResults(moves, transportsCaught, transportBalance);
 	}
 	
 	public static void ReadInputFile(String filename)
