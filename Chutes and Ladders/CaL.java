@@ -6,6 +6,8 @@ public class CaL
 {
 	public static int NUM_OF_SQUARES;
 	
+	boolean final DEBUG = true;
+	
 	public static ArrayList<TransportSpace> portSpaces;
 	
 	public static void main(String[] args)
@@ -18,14 +20,37 @@ public class CaL
 		
 		ReadInputFile(args[0]);
 		
+		int highestMoves = 0;
+		int lowestMoves = Integer.MAX_VALUE;
 		ArrayList<GameResults> resultsList = new ArrayList<GameResults>();
 		for (int i = 0; i < 1000; i++)
 		{
 			GameResults gameResults = PlayGame();
 			resultsList.add(gameResults);
+			
+			if (gameResults.moves > highestMoves)
+				highestMoves = gameResults.moves;
+			if (gameResults.moves < lowestMoves)
+				lowestMoves = gameResults.moves;
 		}
 		
 		//TODO: analyze results and compute averages/histogram
+		float averageMoves = 0;
+		int[] movesDist = new int[highestMoves-lowestMoves+1];
+		
+		for (GameResults gameResults : resultsList)
+		{
+			averageMoves += gameResults.moves;
+			movesDist[gameResults.moves-lowestMoves]++;
+		}
+		
+		averageMoves = averageMoves/resultsList.size();
+		System.out.println("Average moves to complete a game: " + averageMoves);
+		
+		for (int i = 0; i < movesDist.length; i++)
+		{
+			if (DEBUG) System.out.println("Moves [" + (i+lowestMoves) + "]: " + movesDist[i]);
+		}
 	}
 	
 	public static GameResults PlayGame()
@@ -42,7 +67,7 @@ public class CaL
 			{
 				if (playerPos == space.start)
 				{
-					System.out.println("Caught a transport from " + playerPos + " to " + space.end);
+					if (DEBUG) System.out.println("Caught a transport from " + playerPos + " to " + space.end);
 					
 					transportsCaught++;
 					transportBalance += space.end - space.start;
@@ -51,7 +76,7 @@ public class CaL
 				}
 			}
 		}
-		System.out.println("Game Completed in " + moves + " moves.");
+		if (DEBUG) System.out.println("Game Completed in " + moves + " moves.");
 		
 		return new GameResults(moves, transportsCaught, transportBalance);
 	}
