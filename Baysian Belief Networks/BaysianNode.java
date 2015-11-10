@@ -21,4 +21,23 @@ public class BaysianNode
 		probability = new ArrayList<Float>(probabilities);
 		nodeName = n;
 	}
+	
+	public float getProbability(boolean[] parentStates)
+	{
+		assert (parentStates == null && parents == null) || parentStates.length == parents.size();
+		
+		if (parentStates == null)
+			return probability.get(0);
+			
+		else
+		{
+			int index = 0;
+			for (int i = 0; i < parentStates.length; i++)
+			{
+				if (parentStates[i])
+					index += Math.pow(2, i);
+			}
+			return probability.get(index);
+		}
+	}
 }
