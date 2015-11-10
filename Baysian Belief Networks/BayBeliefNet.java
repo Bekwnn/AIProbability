@@ -16,13 +16,30 @@ public class BayBeliefNet
 	{
 		ConstructNetwork();
 		
-		for (int i = 0; i < 10000; i++) {
+		for (int i = 0; i < 1000000; i++) {
 			MedicalStats results = RandomSample();
 			
-			if (results.co)
+			if (IsPart2(results))
 				System.out.println("Results: " + results.ToString());
-		}
-		
+		}		
+	}
+	
+	public static boolean IsPart1(MedicalStats results)
+	{
+		return (
+			results.fl &&
+			results.st &&
+			results.fe &&
+			!results.br &&
+			!results.sm && 
+			results.co &&
+			!results.wh
+		);
+	}
+	
+	public static boolean IsPart2(MedicalStats results)
+	{
+		return (results.fl && results.co && !results.wh);
 	}
 	
 	public static void ConstructNetwork()
