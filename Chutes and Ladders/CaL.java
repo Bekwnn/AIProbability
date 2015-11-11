@@ -6,7 +6,7 @@ public class CaL
 {
 	public static int NUM_OF_SQUARES;
 	
-	boolean final DEBUG = true;
+	final static boolean DEBUG = true;
 	
 	public static ArrayList<TransportSpace> portSpaces;
 	

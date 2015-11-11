@@ -15,12 +15,29 @@ public class BayBeliefNet
 	public static void main(String[] args)
 	{
 		ConstructNetwork();
+		int part1MatchCount = 0;
+		int part2NonRejectCount = 0;
+		int part2MatchCount = 0;
 		
 		for (int i = 0; i < 1000000; i++) {
 			MedicalStats results = RandomSample();
 			
-			if (IsPart2(results))
-				System.out.println("Results: " + results.ToString());
+			if (IsPart1(results))
+				part1MatchCount++;
+			
+			if (results.co)
+			{
+				part2NonRejectCount++;
+				if (IsPart2(results))
+					part2MatchCount++;
+			}
+			
+			if (i % 100000 == 0)
+			{
+				System.out.println((i/100000) + " hundred thousand samples:");
+				System.out.println("Part 1 probability: " + ((float)part1MatchCount/(float)i));
+				System.out.println("Part 2 matches: " + ((float)part2MatchCount/(float)part2NonRejectCount));
+			}
 		}		
 	}
 	
